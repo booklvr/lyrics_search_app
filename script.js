@@ -72,15 +72,21 @@ async function getMoreSongs(url) {
 
 // Get lyrics for song
 async function getLyrics(artist, songTitle) {
-  const res = await fetch(`${apiURL}/v1/${artist}/${songTitle}`);
-  const data = await res.json();
+  try {
+    const res = await fetch(`${apiURL}/v1/${artist}/${songTitle}`);
+    const data = await res.json();
 
-  const lyrics = data.lyrics.replace(/(\r\n|\r|\n)/g, '<br>')
+    const lyrics = data.lyrics.replace(/(\r\n|\r|\n)/g, '<br>')
 
-  result.innerHTML = `
-    <h2><strong>${artist}</strong> - ${songTitle}</h2>
-    <span>${lyrics}</span>
-  `
+    result.innerHTML = `
+      <h2><strong>${artist}</strong> - ${songTitle}</h2>
+      <span>${lyrics}</span>
+    `
+
+    more.innerHTML = '';
+  } catch (e) {
+    result.innerHTML = '<h2>Sorry Lyrics not found</h2>';
+  }
 }
 
 form.addEventListener('submit', e => {
